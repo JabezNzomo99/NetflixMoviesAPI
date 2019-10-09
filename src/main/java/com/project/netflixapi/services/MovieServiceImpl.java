@@ -1,13 +1,20 @@
 package com.project.netflixapi.services;
 
 import com.project.netflixapi.models.Movie;
+import com.project.netflixapi.repositories.MovieRepository;
 
 import java.util.List;
 
 public class MovieServiceImpl implements MovieService {
+
+    private MovieRepository movieRepository;
+
+    public MovieServiceImpl(MovieRepository movieRepository){
+
+    }
     @Override
     public Movie addMovie(Movie movie) {
-        return null;
+        return movieRepository.save(movie);
     }
 
     @Override
