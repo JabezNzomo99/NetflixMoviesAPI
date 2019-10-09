@@ -9,9 +9,7 @@ public class MovieServiceImpl implements MovieService {
 
     private MovieRepository movieRepository;
 
-    public MovieServiceImpl(MovieRepository movieRepository){
 
-    }
     @Override
     public Movie addMovie(Movie movie) {
         return movieRepository.save(movie);
