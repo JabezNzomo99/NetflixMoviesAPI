@@ -2,9 +2,11 @@ package com.project.netflixapi.services;
 
 import com.project.netflixapi.models.Movie;
 import com.project.netflixapi.repositories.MovieRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class MovieServiceImpl implements MovieService {
 
     private MovieRepository movieRepository;
@@ -12,6 +14,7 @@ public class MovieServiceImpl implements MovieService {
     public MovieServiceImpl(MovieRepository movieRepository){
 
     }
+
     @Override
     public Movie addMovie(Movie movie) {
         return movieRepository.save(movie);
