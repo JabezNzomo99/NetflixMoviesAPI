@@ -13,6 +13,7 @@ public class Category {
 
     private String categoryName;
 
+
     @ManyToMany
     @JoinTable(
             name = "category_movies",
@@ -22,12 +23,17 @@ public class Category {
     )
     @JsonIgnore
     private Set<Movie> movies;
+    //private CategoryName categoryName;
+
 
     public Category(){}
 
-    public Category(String categoryName) {
+    private Category(String categoryName) {
         this.categoryName = categoryName;
     }
+//    private Category(CategoryName categoryName) {
+//        this.categoryName = categoryName;
+//    }
 
     public Long getCategoryId() {
         return categoryId;
