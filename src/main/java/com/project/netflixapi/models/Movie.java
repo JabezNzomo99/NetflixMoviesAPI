@@ -2,10 +2,8 @@ package com.project.netflixapi.models;
 
 import org.springframework.data.annotation.Id;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "movies")
 public class Movie {
@@ -19,6 +17,9 @@ public class Movie {
     private String yearOfRelease;
 
     private MovieType movieType;
+
+    @ManyToMany(mappedBy = "movies")
+    private Set<Category> categories;
 
     public Movie(){
 

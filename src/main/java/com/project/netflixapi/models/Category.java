@@ -1,9 +1,9 @@
 package com.project.netflixapi.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "category")
 public class Category {
@@ -12,6 +12,16 @@ public class Category {
     private Long categoryId;
 
     private String categoryName;
+
+    @ManyToMany
+    @JoinTable(
+            name = "category_movies",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id")
+
+    )
+    @JsonIgnore
+    private Set<Movie> movies;
 
     public Category(){}
 
