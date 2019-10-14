@@ -1,15 +1,18 @@
 package com.project.netflixapi.models;
 
-import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "movies")
 public class Movie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "movieId", unique = true)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long movieId;
 
     private String movieName;
@@ -18,11 +21,37 @@ public class Movie {
 
     private MovieType movieType;
 
-    @ManyToMany(mappedBy = "movies")
-    private Set<Category> categories;
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "category_movies",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+
+    )
+    private Set<Category> categories = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Movie(){
 
+    }
+
+    public Movie(String movieName, String yearOfRelease, MovieType movieType, Set<Category> categories) {
+        this.movieName = movieName;
+        this.yearOfRelease = yearOfRelease;
+        this.movieType = movieType;
+        this.categories = categories;
     }
 
     public Movie(String movieName, String yearOfRelease, MovieType movieType) {
@@ -61,5 +90,13 @@ public class Movie {
 
     public void setMovieType(MovieType movieType) {
         this.movieType = movieType;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }

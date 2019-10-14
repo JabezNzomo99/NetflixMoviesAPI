@@ -3,6 +3,7 @@ package com.project.netflixapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "category")
@@ -13,20 +14,12 @@ public class Category {
 
     private String categoryName;
 
-
-    @ManyToMany
-    @JoinTable(
-            name = "category_movies",
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id")
-
-    )
-    @JsonIgnore
-    private Set<Movie> movies;
+    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "categories", fetch = FetchType.EAGER)
+    private Set<Movie> movies = new HashSet<>();
 
     public Category(){}
 
-    private Category(String categoryName) {
+    public Category(String categoryName) {
         this.categoryName = categoryName;
     }
 

@@ -1,9 +1,10 @@
 package com.project.netflixapi.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.context.annotation.Primary;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "users")
 public class User {
@@ -11,12 +12,10 @@ public class User {
     private String userName;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
+    @Column(name = "userId",unique = true)
+    private Long identificationNumber;
 
-    private String identificationNumber;
-
-    public User(String userName, String identificationNumber) {
+    public User(String userName, Long identificationNumber) {
         this.userName = userName;
         this.identificationNumber = identificationNumber;
     }
@@ -33,19 +32,12 @@ public class User {
         this.userName = userName;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getIdentificationNumber() {
+    public Long getIdentificationNumber() {
         return identificationNumber;
     }
 
-    public void setIdentificationNumber(String identificationNumber) {
+    public void setIdentificationNumber(Long identificationNumber) {
         this.identificationNumber = identificationNumber;
     }
 }
