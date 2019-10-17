@@ -2,6 +2,7 @@ package com.project.netflixapi.models;
 
 import com.project.netflixapi.util.Create;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 public class MovieDto {
 
 
-    @NotNull(groups = Create.class)
+    @Valid
     private Movie movie;
 
     @NotNull(groups = Create.class)
