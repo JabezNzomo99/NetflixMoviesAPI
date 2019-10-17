@@ -12,7 +12,7 @@ public class Movie {
 
     @Id
     @Column(name = "movieId", unique = true)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movieId;
 
     private String movieName;

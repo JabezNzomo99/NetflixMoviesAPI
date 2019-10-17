@@ -1,6 +1,8 @@
 package com.project.netflixapi.services;
 
+import com.project.netflixapi.models.Category;
 import com.project.netflixapi.models.Movie;
+import com.project.netflixapi.models.MovieType;
 import com.project.netflixapi.models.User;
 import com.project.netflixapi.repositories.MovieRepository;
 import com.project.netflixapi.repositories.UserRepository;
@@ -9,6 +11,7 @@ import com.project.netflixapi.util.UserNotFound;
 import jdk.nashorn.internal.runtime.options.Option;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,5 +82,24 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> findMoviesByUser(Long userId) {
         User retrievedUser = userRepository.findById(userId).orElseThrow(()-> new UserNotFound("User with ID: "+userId+" does not exist"));
         return movieRepository.findMoviesByUser(retrievedUser);
+    }
+
+    @Override
+    public List<Movie> findMoviesByMovieType(MovieType movieType) {
+        return movieRepository.findMoviesByMovieType(movieType);
+    }
+
+    @Override
+    public List<Movie> findMoviesByMovieTypeAndCategory(MovieType movieType, Long categoryId) {
+        List<Movie> movieList = findMoviesByMovieType(movieType);
+        List<Movie> moviesPerCategory = new ArrayList<Movie>();
+        for (Movie movie : movieList){
+            for(Category category : movie.getCategories()){
+                if(category.getCategoryId() == categoryId){
+                    moviesPerCategory.add(movie);
+                }
+            }
+        }
+        return moviesPerCategory;
     }
 }

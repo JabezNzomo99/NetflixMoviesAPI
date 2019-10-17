@@ -19,6 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    //Function to register or add a user
     @PostMapping
     public User addUser(@RequestBody User user) {
         try {
@@ -28,6 +29,7 @@ public class UserController {
         }
     }
 
+    //Retrieve a list of users
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();

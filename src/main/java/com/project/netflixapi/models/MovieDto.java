@@ -5,22 +5,13 @@ import java.util.List;
 
 public class MovieDto {
 
-    private Long userId;
+
     private Movie movie;
     private List<Long> categories;
 
-    public MovieDto(Long userId, Movie movie, List<Long> categories) {
-        this.userId = userId;
+    public MovieDto(Movie movie, List<Long> categories) {
         this.movie = movie;
         this.categories = categories;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Movie getMovie() {

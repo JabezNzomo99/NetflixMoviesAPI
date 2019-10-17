@@ -1,10 +1,9 @@
 package com.project.netflixapi.controllers;
 
 import com.project.netflixapi.models.Category;
+import com.project.netflixapi.models.Movie;
 import com.project.netflixapi.services.CategoryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,8 +16,21 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    //Retrieve a list of categories
     @GetMapping
     public List<Category> getAllCategories(){
         return categoryService.getAllCategories();
+    }
+
+
+    @GetMapping(value = "movies/{category}")
+    public List<Category> getMoviesPerCategory(@PathVariable String category){
+        return categoryService.getMoviesPerCategory(category);
+    }
+
+    //Function to add a category
+    @PostMapping
+    public Category addCategory(Category category){
+        return categoryService.addCategory(category);
     }
 }

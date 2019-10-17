@@ -6,15 +6,24 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "category")
+@Entity(name = "categories")
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
 
     private String categoryName;
 
-    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "categories", fetch = FetchType.EAGER)
+    public Set<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(Set<Movie> movies) {
+        this.movies = movies;
+    }
+
+    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "categories", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Movie> movies = new HashSet<>();
 
     public Category(){}
