@@ -2,8 +2,11 @@ package com.project.netflixapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.project.netflixapi.util.Create;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,10 +18,13 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movieId;
 
+    @NotNull(groups = Create.class)
     private String movieName;
 
+    @NotNull(groups = Create.class)
     private String yearOfRelease;
 
+    @NotNull(groups = Create.class)
     private MovieType movieType;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

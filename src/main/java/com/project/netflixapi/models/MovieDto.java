@@ -1,12 +1,18 @@
 package com.project.netflixapi.models;
 
+import com.project.netflixapi.util.Create;
+
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDto {
 
 
+    @NotNull(groups = Create.class)
     private Movie movie;
+
+    @NotNull(groups = Create.class)
     private List<Long> categories;
 
     public MovieDto(Movie movie, List<Long> categories) {

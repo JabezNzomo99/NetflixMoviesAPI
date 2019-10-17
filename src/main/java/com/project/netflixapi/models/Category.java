@@ -1,8 +1,10 @@
 package com.project.netflixapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.netflixapi.util.Create;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +14,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
 
+    @NotNull(groups = Create.class)
     private String categoryName;
 
     public Set<Movie> getMovies() {

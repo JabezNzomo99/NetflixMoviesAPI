@@ -3,6 +3,8 @@ package com.project.netflixapi.controllers;
 import com.project.netflixapi.models.Category;
 import com.project.netflixapi.models.Movie;
 import com.project.netflixapi.services.CategoryService;
+import com.project.netflixapi.util.Create;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +27,7 @@ public class CategoryController {
 
     //Function to add a category
     @PostMapping
-    public Category addCategory(Category category){
+    public Category addCategory(@Validated(value = Create.class) @RequestBody Category category){
         return categoryService.addCategory(category);
     }
 }

@@ -4,19 +4,17 @@ import com.project.netflixapi.models.*;
 import com.project.netflixapi.repositories.CategoryRepository;
 import com.project.netflixapi.repositories.UserRepository;
 import com.project.netflixapi.services.MovieService;
-import com.project.netflixapi.services.UserService;
 import com.project.netflixapi.util.CategoryDoesNotExist;
+import com.project.netflixapi.util.Create;
 import com.project.netflixapi.util.MovieNotFoundException;
-import com.project.netflixapi.util.UserIdAlreadyExistsException;
 import com.project.netflixapi.util.UserNotFound;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -76,18 +74,18 @@ public class MovieController {
     }
 
 
-    //Returns a list of movies belonging to a particular category by passing the category id
-    @GetMapping(value = "movies/category/{categoryId}")
-    public List<Movie> getMoviesByCategoryId(@PathVariable Long categoryId){
-        return categoryRepository.findMoviesByCategoryId(categoryId);
-    }
+//    //Returns a list of movies belonging to a particular category by passing the category id
+//    @GetMapping(value = "movies/category/{categoryId}")
+//    public List<Movie> getMoviesByCategoryId(@PathVariable Long categoryId){
+//        return categoryRepository.findMoviesByCategoryId(categoryId);
+//    }
 
 
 
     //Allows user to suggest a movie
     @PostMapping(value = "movies/{userId}")
     public Movie suggestMovie(@PathVariable Long userId,
-                              @RequestBody MovieDto movie){
+                              @Validated(value = Create.class) @RequestBody MovieDto movie){
         User user = userRepository.findById(userId).orElseThrow(()->new UserNotFound("User with ID:"+ userId+ " not found"));
         Set<Category> categories = new HashSet<>();
         for(Long id : movie.getCategories()){
