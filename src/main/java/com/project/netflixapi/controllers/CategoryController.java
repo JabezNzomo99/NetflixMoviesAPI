@@ -23,11 +23,6 @@ public class CategoryController {
     }
 
 
-    @GetMapping(value = "movies/{category}")
-    public List<Category> getMoviesPerCategory(@PathVariable String category){
-        return categoryService.getMoviesPerCategory(category);
-    }
-
     //Function to add a category
     @PostMapping
     public Category addCategory(Category category){

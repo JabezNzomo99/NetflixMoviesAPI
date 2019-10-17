@@ -69,6 +69,21 @@ public class MovieController {
         }
     }
 
+    //Returns a list of movies belonging to a particular category by passing the category name
+    @GetMapping(value = "movies/category/{categoryName}")
+    public List<Movie> getMoviesByCategoryName(@PathVariable String categoryName){
+        return categoryRepository.findMoviesByCategoryName(categoryName);
+    }
+
+
+    //Returns a list of movies belonging to a particular category by passing the category id
+    @GetMapping(value = "movies/category/{categoryId}")
+    public List<Movie> getMoviesByCategoryId(@PathVariable Long categoryId){
+        return categoryRepository.findMoviesByCategoryId(categoryId);
+    }
+
+
+
     //Allows user to suggest a movie
     @PostMapping(value = "movies/{userId}")
     public Movie suggestMovie(@PathVariable Long userId,
@@ -128,4 +143,6 @@ public class MovieController {
     public List<Movie> findMoviesByMovieType(@RequestParam MovieType movieType){
         return movieService.findMoviesByMovieType(movieType);
     }
+
+
 }
