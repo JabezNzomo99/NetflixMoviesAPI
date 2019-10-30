@@ -44,4 +44,13 @@ public class User {
     public void setIdentificationNumber(Long identificationNumber) {
         this.identificationNumber = identificationNumber;
     }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "User Name :"+userName+
+                "Identification Number :"+identificationNumber+
+                "}";
+    }
 }

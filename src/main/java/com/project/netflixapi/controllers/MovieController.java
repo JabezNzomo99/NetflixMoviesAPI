@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+
 public class MovieController {
 
     private final MovieService movieService;
@@ -32,7 +33,7 @@ public class MovieController {
     }
 
     //Returns a list of all movies
-    @GetMapping(value = "movies")
+    @GetMapping(value = "movies",produces = "application/json")
     public List<Movie> getAllMovies(){
         return movieService.getAllMovies();
     }

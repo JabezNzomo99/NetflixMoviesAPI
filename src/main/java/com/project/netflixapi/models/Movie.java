@@ -15,7 +15,7 @@ public class Movie {
 
     @Id
     @Column(name = "movieId", unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long movieId;
 
     @NotNull(groups = Create.class)
@@ -24,7 +24,6 @@ public class Movie {
     @NotNull(groups = Create.class)
     private String yearOfRelease;
 
-    @NotNull(groups = Create.class)
     private MovieType movieType;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
@@ -104,5 +103,14 @@ public class Movie {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "Movie Name :"+movieName+
+                "Year of Release:"+yearOfRelease+
+                "Categories"+categories+
+                "}";
     }
 }

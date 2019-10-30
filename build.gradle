@@ -25,6 +25,11 @@ dependencies {
 	compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.4.0'
 	compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.1'
 
+	implementation "com.netflix.feign:feign-gson:8.18.0"
+	implementation "com.netflix.feign:feign-okhttp:8.18.0"
+	implementation "io.github.openfeign:feign-httpclient:10.4.0"
+
+
 }
 
 dependencyManagement {

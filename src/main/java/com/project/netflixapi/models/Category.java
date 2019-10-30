@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity(name = "categories")
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long categoryId;
 
     @NotNull(groups = Create.class)
@@ -49,5 +49,13 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                " Category Id:"+categoryId+
+                " Category Name:"+categoryName+
+                "}";
     }
 }
