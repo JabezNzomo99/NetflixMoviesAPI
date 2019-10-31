@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class FeignRestClientTest implements CommandLineRunner {
 
     private final FeignRestClient feignRestClient;
