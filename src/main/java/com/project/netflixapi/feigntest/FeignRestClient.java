@@ -10,7 +10,7 @@ import java.util.List;
 @FeignClient(name = "netflix",url = "http://localhost:8080", configuration = FeignLogConfig.class)
 public interface FeignRestClient {
 
-    @RequestMapping(method = RequestMethod.POST, value = "users")
+    @RequestMapping(method = RequestMethod.POST, value = "users", consumes = "application/json")
     public User addUser(@RequestBody  User user);
 
     @RequestMapping(method = RequestMethod.GET, value = "users")
@@ -29,6 +29,7 @@ public interface FeignRestClient {
     public List<Movie> getMoviesPerCategoryAndType(@PathVariable(name = "categoryId") Long categoryId,
                                                    @RequestParam(name = "movieType")MovieType movieType);
 
+
     @RequestMapping(method = RequestMethod.GET, value = "my_movies/{userId}")
     public List<Movie> getUserMovies(@PathVariable(name = "userId") Long userId);
 
@@ -36,7 +37,7 @@ public interface FeignRestClient {
     public Movie getMovieById(@PathVariable(name = "movieId") Long movieId);
 
     @RequestMapping(method = RequestMethod.GET, value = "movies/search")
-    public Movie searchMovieByName(@RequestParam(name = "movieName") String movieName);
+    public List<Movie> searchMovieByName(@RequestParam(name = "movieName") String movieName);
 
     @RequestMapping(method = RequestMethod.GET, value = "movies/category/{categoryName}")
     public List<Movie> getMoviesByCategoryName(@PathVariable(name = "categoryName") String categoryName);

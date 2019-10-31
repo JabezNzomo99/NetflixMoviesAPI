@@ -8,6 +8,7 @@ import com.project.netflixapi.util.CategoryDoesNotExist;
 import com.project.netflixapi.util.Create;
 import com.project.netflixapi.util.MovieNotFoundException;
 import com.project.netflixapi.util.UserNotFound;
+import io.swagger.annotations.Api;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-
+@Api(value="Netlix Rest API", description="Operations pertaining to movies")
 public class MovieController {
 
     private final MovieService movieService;
@@ -41,7 +42,7 @@ public class MovieController {
     //Returns a list of movies per category and type
     @GetMapping(value = "movies/{categoryId}")
     public List<Movie> getMoviesPerCategoryAndType(@PathVariable Long categoryId,
-                                                   @RequestParam MovieType movieType){
+                                                   @RequestParam MovieType movieType) throws CategoryDoesNotExist{
         categoryRepository.findById(categoryId).orElseThrow(()->new CategoryDoesNotExist(" Category with ID: "+categoryId+" does not exist"));
         return movieService.findMoviesByMovieTypeAndCategory(movieType,categoryId);
     }
@@ -54,15 +55,15 @@ public class MovieController {
 
     //Returns a movie corresponding to the movieId passed
     @GetMapping(value = "movies/search/{movieId}")
-    public Movie getMovieById(@PathVariable Long movieId){
+    public Movie getMovieById(@PathVariable Long movieId) throws MovieNotFoundException{
         return movieService.findMovieById(movieId).orElseThrow(()-> new MovieNotFoundException("Movie with id "+ movieId + " does not exist"));
     }
 
     //Returns a movie that matches the movie name the user passes
     @GetMapping(value = "movies/search")
-    public Movie searchMovieByName(@RequestParam String movieName){
+    public List<Movie> searchMovieByName(@RequestParam String movieName) throws MovieNotFoundException{
         try{
-            return movieService.searchMovieByName(movieName);
+            return movieService.searchMoviesByName(movieName);
         }catch (MovieNotFoundException exception){
            throw new MovieNotFoundException("Movie with name "+movieName+" not found");
         }
@@ -86,7 +87,7 @@ public class MovieController {
     //Allows user to suggest a movie
     @PostMapping(value = "movies/{userId}")
     public Movie suggestMovie(@PathVariable Long userId,
-                              @Validated(value = Create.class) @RequestBody MovieDto movie){
+                              @Validated(value = Create.class) @RequestBody MovieDto movie) throws CategoryDoesNotExist{
         User user = userRepository.findById(userId).orElseThrow(()->new UserNotFound("User with ID:"+ userId+ " not found"));
         Set<Category> categories = new HashSet<>();
         for(Long id : movie.getCategories()){
@@ -105,7 +106,7 @@ public class MovieController {
     public Movie updateMovie(
             @PathVariable Long userId,
             @PathVariable Long movieId,
-            @RequestBody MovieDto movie){
+            @RequestBody MovieDto movie) throws MovieNotFoundException,CategoryDoesNotExist, UserNotFound{
 
         User retrievedUser = userRepository.findById(userId).orElseThrow(()->new UserNotFound("User with "+ userId + " not found"));
         Movie retrievedMovie = movieService.findMovieById(movieId).orElseThrow(()->new MovieNotFoundException("Movie with "+movieId+" does not exist"));
@@ -127,7 +128,7 @@ public class MovieController {
     //Allow user to delete a movie
     @DeleteMapping("movies/{userId}/{movieId}")
     public void deleteMovie(@PathVariable Long movieId,
-                            @PathVariable Long userId){
+                            @PathVariable Long userId) throws UserNotFound,MovieNotFoundException{
         User retrievedUser = userRepository.findById(userId).orElseThrow(()->new UserNotFound("User with ID:  "+ userId + " not found"));
         Movie retrievedMovie = movieService.findMovieById(movieId).orElseThrow(()->new MovieNotFoundException("Movie with ID: "+movieId+" does not exist"));
         if(retrievedUser.getIdentificationNumber() != retrievedMovie.getUser().getIdentificationNumber()){

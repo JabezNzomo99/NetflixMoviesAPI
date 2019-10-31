@@ -64,8 +64,8 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie searchMovieByName(String movieName) throws MovieNotFoundException {
-        Movie searchedMovie = movieRepository.findMovieByMovieName(movieName);
+    public List<Movie> searchMoviesByName(String movieName) throws MovieNotFoundException {
+        List<Movie> searchedMovie = movieRepository.findMoviesByMovieName(movieName);
         if(searchedMovie == null){
             throw new MovieNotFoundException();
         }else{

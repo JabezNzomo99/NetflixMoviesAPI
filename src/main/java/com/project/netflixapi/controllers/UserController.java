@@ -12,7 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "users")
+@RequestMapping(value = "users", produces = "application/json")
 public class UserController {
 
     private final UserService userService;

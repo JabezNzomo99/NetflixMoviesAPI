@@ -1,6 +1,8 @@
 package com.project.netflixapi.models;
 
 import com.project.netflixapi.util.Create;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
@@ -9,14 +11,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "users")
+@ApiModel(description = "All details about the user")
 public class User {
 
     @NotNull(groups = Create.class)
+    @ApiModelProperty("The user name")
     private String userName;
 
     @Id
     @Column(name = "userId",unique = true)
     @NotNull(groups = Create.class)
+    @ApiModelProperty("The user identification number")
     private Long identificationNumber;
 
     public User(String userName, Long identificationNumber) {

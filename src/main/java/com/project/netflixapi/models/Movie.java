@@ -3,6 +3,8 @@ package com.project.netflixapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.netflixapi.util.Create;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
@@ -11,19 +13,24 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "movies")
+@ApiModel(description = "Details about a movie")
 public class Movie {
 
     @Id
     @Column(name = "movieId", unique = true)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @ApiModelProperty(notes = "The database generated movie ID")
     private Long movieId;
 
     @NotNull(groups = Create.class)
+    @ApiModelProperty(notes = "The movie name")
     private String movieName;
 
     @NotNull(groups = Create.class)
+    @ApiModelProperty(notes = "The movie year of release")
     private String yearOfRelease;
 
+    @ApiModelProperty(notes = "The movie type (SUGGESTED/ORIGINAL)")
     private MovieType movieType;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
@@ -33,6 +40,7 @@ public class Movie {
             inverseJoinColumns = @JoinColumn(name = "category_id")
 
     )
+    @ApiModelProperty(notes = "The categories the movie belongs to")
     private Set<Category> categories = new HashSet<>();
 
     @ManyToOne
@@ -108,6 +116,7 @@ public class Movie {
     @Override
     public String toString() {
         return "Movie{" +
+                "Movie Id : "+movieId+
                 "Movie Name :"+movieName+
                 "Year of Release:"+yearOfRelease+
                 "Categories"+categories+

@@ -2,6 +2,7 @@ package com.project.netflixapi.feigntest;
 
 import com.project.netflixapi.models.*;
 import com.project.netflixapi.util.UserIdAlreadyExistsException;
+import feign.FeignException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ public class FeignRestClientTest implements CommandLineRunner {
 
     private final FeignRestClient feignRestClient;
     private User createdUser = new User("Test",1234L);
+    Movie testMovie = new Movie();
 
     public FeignRestClientTest(FeignRestClient feignRestClient) {
         this.feignRestClient = feignRestClient;
@@ -25,7 +27,7 @@ public class FeignRestClientTest implements CommandLineRunner {
         try {
             createdUser = feignRestClient.addUser(new User("Test", 1234L));
             System.out.println(createdUser.toString());
-        } catch (UserIdAlreadyExistsException exception) {
+        } catch (FeignException exception) {
             System.out.println(exception.getMessage());
         }
 
@@ -49,13 +51,12 @@ public class FeignRestClientTest implements CommandLineRunner {
         try {
             List<Movie> movieList1 = feignRestClient.getMoviesPerCategoryAndType(1L, MovieType.ORIGINAL);
             System.out.println(movieList1.toString());
-        }catch (Exception exception){
+        }catch (FeignException exception){
             System.out.println(exception.getMessage());
         }
 
         //Suggest Movie
         try{
-            Movie testMovie = new Movie();
             testMovie.setMovieName("Jamie Jamie");
             ArrayList<Long> categoriesId = new ArrayList<>();
             categoriesId.add(1L);
@@ -63,7 +64,7 @@ public class FeignRestClientTest implements CommandLineRunner {
             testMovie = feignRestClient.suggestMovie(createdUser.getIdentificationNumber(),
                     new MovieDto( testMovie, categoriesId));
             System.out.println(testMovie.toString());
-        }catch(Exception exception) {
+        }catch(FeignException exception) {
             System.out.println(exception.getMessage());
         }
 
@@ -71,23 +72,40 @@ public class FeignRestClientTest implements CommandLineRunner {
         try{
             List<Movie> userMovies = feignRestClient.getUserMovies(createdUser.getIdentificationNumber());
             System.out.println(userMovies.toString());
-        }catch (Exception e){
+        }catch (FeignException e){
             System.out.println(e.getMessage());
         }
+
+        //Update user's movie
+        try{
+            ArrayList<Long> categoriesId = new ArrayList<>();
+            categoriesId.add(1L);
+            testMovie.setMovieId(2L);
+            Movie updatedMovie = new Movie();
+            updatedMovie.setMovieName("Updated Movie");
+            updatedMovie.setYearOfRelease("2010");
+            updatedMovie  = feignRestClient.updateMovie(1234L, testMovie.getMovieId(),
+                    new MovieDto( updatedMovie, categoriesId));
+            System.out.println(updatedMovie.toString());
+        }catch (FeignException exception){
+            exception.printStackTrace();
+        }
+
+
 
         //Get Movie by movie id
         try{
             Movie searchedMovieById = feignRestClient.getMovieById(2L);
             System.out.println(searchedMovieById.toString());
-        }catch (Exception exception){
+        }catch (FeignException exception){
             System.out.println(exception.getMessage());
         }
 
         //Search movie by name
         try {
-            Movie searchedMovieByName = feignRestClient.searchMovieByName("Jamie Jamie");
-            System.out.println(searchedMovieByName.toString());
-        }catch (Exception e){
+            List<Movie> searchedMoviesByName = feignRestClient.searchMovieByName("Jamie Jamie");
+            System.out.println(searchedMoviesByName.toString());
+        }catch (FeignException e){
             e.printStackTrace();
         }
 
@@ -95,17 +113,27 @@ public class FeignRestClientTest implements CommandLineRunner {
         try {
                 List<Movie> moviesByCategoryName = feignRestClient.getMoviesByCategoryName("Action");
                 System.out.println(moviesByCategoryName.toString());
-        }catch (Exception e){
+        }catch (FeignException e){
             e.printStackTrace();
         }
 
+
+        //Get movies by movie type
         try {
             List<Movie> moviesByMovieType = feignRestClient.findMoviesByMovieType(MovieType.ORIGINAL);
             System.out.println(moviesByMovieType.toString());
-        }catch (Exception e){
+        }catch (FeignException e){
             e.printStackTrace();
         }
 
+        //Delete a users movie
+        try{
+            feignRestClient.deleteMovie(testMovie.getMovieId(),createdUser.getIdentificationNumber());
+            List<Movie> allMovies = feignRestClient.getAllMovies();
+            System.out.println(allMovies.toString());
+        }catch (FeignException feignException){
+            feignException.printStackTrace();
+        }
 
 
     }

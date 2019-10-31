@@ -13,7 +13,7 @@ public interface MovieService {
     public List<Movie> getAllMovies();
     public List<Movie> getAllMoviesByCategory();
     public List<Movie> getAllMoviesByMovieType();
-    public Movie searchMovieByName(String movieName);
+    public List<Movie> searchMoviesByName(String movieName);
     public Optional<Movie> findMovieById(Long id);
     public List<Movie> findMoviesByUser(Long userId);
     public List<Movie> findMoviesByMovieType(MovieType movieType);
